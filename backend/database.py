@@ -133,7 +133,7 @@ def _seed(c):
             "w1", version_id,
             "card application status",
             "Retrieve card application status for a customer",
-            "http://backend:8000/mock/application_status",
+            "/mock/application_status",
             "GET",
             json.dumps([]),
             "{}",
@@ -144,7 +144,7 @@ def _seed(c):
             "w2", version_id,
             "failed card transaction",
             "Look up the reason a card transaction was declined",
-            "http://backend:8000/mock/failed_status",
+            "/mock/failed_status",
             "GET",
             json.dumps([
                 {"name": "transaction_id", "label": "your Transaction ID (visible in the app under Transaction History)", "required": True, "param_type": "query"}

@@ -108,10 +108,14 @@ async def _execute_workflow(wf: dict, collected_inputs: dict) -> tuple:
     headers = {**wf.get("headers", {}), "Accept": "application/json"}
     try:
         async with httpx.AsyncClient(timeout=10.0) as http:
+            # Support relative URLs (e.g. /mock/...) — resolve against local server
+            url = wf["endpoint_url"]
+            if url.startswith("/"):
+                url = f"http://localhost:{os.environ.get('PORT', '8000')}{url}"
             if wf["http_method"].upper() == "GET":
-                resp = await http.get(wf["endpoint_url"], params=query_params, headers=headers)
+                resp = await http.get(url, params=query_params, headers=headers)
             else:
-                resp = await http.post(wf["endpoint_url"], params=query_params, json=body_params, headers=headers)
+                resp = await http.post(url, params=query_params, json=body_params, headers=headers)
         resp.raise_for_status()
         data = resp.json()
     except httpx.HTTPStatusError as e:

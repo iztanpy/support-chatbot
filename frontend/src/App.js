@@ -1,28 +1,28 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import ChatTab      from './components/ChatTab';
-import ConfigTab    from './components/ConfigTab';
-import MistakesTab  from './components/MistakesTab';
-import LogsTab      from './components/LogsTab';
+import ChatTab from './components/ChatTab';
+import ConfigTab from './components/ConfigTab';
+import MistakesTab from './components/MistakesTab';
+import LogsTab from './components/LogsTab';
 import DocumentsTab from './components/DocumentsTab';
-import VersionsTab  from './components/VersionsTab';
+import VersionsTab from './components/VersionsTab';
 import { getMistakes, getStats, getVersions } from './api/client';
 
 const NAV = [
-  { id: 'chat',      label: 'Chat',      icon: '💬' },
-  { id: 'config',    label: 'Config',    icon: '⚙️' },
-  { id: 'mistakes',  label: 'Mistakes',  icon: '⚑'  },
-  { id: 'logs',      label: 'Logs',      icon: '📋' },
+  { id: 'chat', label: 'Chat', icon: '💬' },
+  { id: 'config', label: 'Config', icon: '⚙️' },
+  { id: 'mistakes', label: 'Mistakes', icon: '⚑' },
+  { id: 'logs', label: 'Logs', icon: '📋' },
   { id: 'documents', label: 'Documents', icon: '📄' },
-  { id: 'versions',  label: 'Versions',  icon: '🔀' },
+  { id: 'versions', label: 'Versions', icon: '🔀' },
 ];
 
 export default function App() {
-  const [tab,             setTab]             = useState('chat');
+  const [tab, setTab] = useState('chat');
   const [pendingMistakes, setPendingMistakes] = useState(0);
-  const [stats,           setStats]           = useState(null);
+  const [stats, setStats] = useState(null);
   const [liveVersionName, setLiveVersionName] = useState('');
-  const [logRefresh,      setLogRefresh]      = useState(0);
-  const [versionRefresh,  setVersionRefresh]  = useState(0);
+  const [logRefresh, setLogRefresh] = useState(0);
+  const [versionRefresh, setVersionRefresh] = useState(0);
   const chatRef = useRef(null);
 
   const loadMeta = useCallback(async () => {
@@ -34,7 +34,7 @@ export default function App() {
       setStats(s);
       const live = versions.find(v => v.is_live);
       if (live) setLiveVersionName(live.name);
-    } catch {}
+    } catch { }
   }, []);
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export default function App() {
           }}>⬡</div>
           <div>
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 15, letterSpacing: '0.08em', color: '#c0c0ff' }}>
-              SUPPORT BOT
+              CHATBOT
             </div>
             <div style={{ fontSize: 9, color: '#3a3a80', letterSpacing: '0.2em' }}>CUSTOMER SERVICE INTELLIGENCE</div>
           </div>
@@ -137,11 +137,11 @@ export default function App() {
         <div style={{ display: tab === 'chat' ? 'flex' : 'none', flex: 1 }}>
           <ChatTab ref={chatRef} onNewLog={handleNewLog} />
         </div>
-        {tab === 'config'    && <ConfigTab />}
-        {tab === 'mistakes'  && <MistakesTab />}
-        {tab === 'logs'      && <LogsTab refreshKey={logRefresh} />}
+        {tab === 'config' && <ConfigTab />}
+        {tab === 'mistakes' && <MistakesTab />}
+        {tab === 'logs' && <LogsTab refreshKey={logRefresh} />}
         {tab === 'documents' && <DocumentsTab onVersionCreated={handleVersionCreated} />}
-        {tab === 'versions'  && <VersionsTab refreshKey={versionRefresh} onVersionPromoted={handleVersionPromoted} />}
+        {tab === 'versions' && <VersionsTab refreshKey={versionRefresh} onVersionPromoted={handleVersionPromoted} />}
       </main>
     </div>
   );

@@ -121,7 +121,7 @@ def _seed(c):
         VALUES (?, ?, ?)
     """, (
         version_id,
-        "",  # blank by default — set via Config tab or document upload
+        "https://help.atome.ph/hc/en-gb/categories/4439682039065-Atome-Card",  # blank by default — set via Config tab or document upload
         """You are a helpful and professional customer service assistant.
 - Always be polite and empathetic.
 - If you don't know the answer, say so clearly and offer to escalate to a human agent.

@@ -213,12 +213,13 @@ async def apply_document(body: dict):
         extracted.get("guidelines") or "",
     ))
 
-    # Workflows — document only, no fallback
-    for wf in extracted.get("workflows", []):
-        conn.execute("""
-            INSERT INTO workflows
-              (id, version_id, trigger, description, endpoint_url, http_method,
-               inputs, headers, response_template, enabled)
+    if extracted.get("workflows"):
+        # Workflows — document only, no fallback
+        for wf in extracted.get("workflows", []):
+            conn.execute("""
+                INSERT INTO workflows
+                  (id, version_id, trigger, description, endpoint_url, http_method,
+                   inputs, headers, response_template, enabled)
             VALUES (?,?,?,?,?,?,?,?,?,?)
         """, (
             f"w{uuid.uuid4().hex[:8]}", new_version_id,
@@ -229,11 +230,12 @@ async def apply_document(body: dict):
         ))
 
     # Corrections — document only, no fallback
-    for corr in extracted.get("corrections", []):
-        conn.execute("""
-            INSERT INTO corrections (version_id, question_pattern, correct_answer)
-            VALUES (?,?,?)
-        """, (new_version_id, corr.get("question_pattern", ""), corr.get("correct_answer", "")))
+    if extracted.get("corrections"):
+        for corr in extracted.get("corrections", []):
+            conn.execute("""
+                INSERT INTO corrections (version_id, question_pattern, correct_answer)
+                VALUES (?,?,?)
+            """, (new_version_id, corr.get("question_pattern", ""), corr.get("correct_answer", "")))
 
     conn.commit()
     row = conn.execute("SELECT * FROM bot_versions WHERE id=?", (new_version_id,)).fetchone()

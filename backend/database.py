@@ -135,7 +135,9 @@ def _seed(c):
             "Retrieve card application status for a customer",
             "/mock/application_status",
             "GET",
-            json.dumps([]),
+            json.dumps([
+                {"name": "application_id", "label": "your Application ID (visible in the app under Application History)", "required": True, "param_type": "query"}
+            ]),
             "{}",
             "Application Status\nReference: {{reference_number}}\nStatus: {{status}}\nApplication Date: {{application_date}}\nEst. Completion: {{estimated_completion}}",
             1,

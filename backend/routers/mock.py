@@ -3,18 +3,18 @@ from fastapi import APIRouter
 router = APIRouter()
 
 @router.get("/application_status")
-def card_application_mock():
+def card_application_mock(application_id):
     return {
-        "reference_number": 1,
+        "reference_number": application_id,
         "status": "ok",
         "application_date": "2026-01-04",
         "estimated_completion": "2026-03-04",
     }
 
 @router.get("/failed_status")
-def failed_transaction_mock():
+def failed_transaction_mock(transaction_id):
     return {
-        "transaction_id": 1,
+        "transaction_id": transaction_id,
         "status": "failed",
         "amount": 100,
         "merchant": "SHEIN",
